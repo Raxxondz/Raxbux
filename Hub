@@ -1,0 +1,41 @@
+-- Define the gamepasses with their respective IDs and Robux prices
+local gamepasses = {
+    { id = 123456789, price = 100 },
+    { id = 987654321, price = 200 },
+    { id = 555555555, price = 300 },
+    -- Add more gamepasses here as needed
+}
+
+-- Function to check if the player has enough Robux
+local function hasEnoughRobux(player, price)
+    local playerRobux = player:WaitForChild("leaderstats"):WaitForChild("Robux").Value
+    return playerRobux >= price
+end
+
+-- Function to purchase the gamepass
+local function purchaseGamepass(player, id)
+    game:GetService("MarketplaceService"):PromptPurchase(player, id)
+end
+
+-- Main script
+game.Players.PlayerAdded:Connect(function(player)
+    local purchasedGamepasses = {}
+    
+    while true do
+        local hasEnough = false
+        for _, gamepass in ipairs(gamepasses) do
+            if not purchasedGamepasses[gamepass.id] and hasEnoughRobux(player, gamepass.price) then
+                purchaseGamepass(player, gamepass.id)
+                purchasedGamepasses[gamepass.id] = true
+                hasEnough = true
+                wait(1) -- Wait for a second before purchasing the next gamepass (adjust as needed)
+            end
+        end
+        
+        if not hasEnough then
+            break
+        end
+    end
+    
+    print("Robux balance is empty. Stopped purchasing gamepasses.")
+end)
