@@ -1,23 +1,23 @@
--- Define the gamepasses with their respective IDs and Robux prices
+
 local gamepasses = {
     { id = 49914660, price = 10 },
     { id = 49914981, price = 200 },
     { id = 49916098, price = 1000 },
-    -- Add more gamepasses here as needed
+
 }
 
--- Function to check if the player has enough Robux
+
 local function hasEnoughRobux(player, price)
     local playerRobux = player:WaitForChild("leaderstats"):WaitForChild("Robux").Value
     return playerRobux >= price
 end
 
--- Function to purchase the gamepass
+
 local function purchaseGamepass(player, id)
     game:GetService("MarketplaceService"):PromptPurchase(player, id)
 end
 
--- Main script
+
 game.Players.PlayerAdded:Connect(function(player)
     local purchasedGamepasses = {}
     
